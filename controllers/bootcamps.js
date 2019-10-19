@@ -17,11 +17,14 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
+
   // If this is a formatted object id, but it's not actually in the database.
-  if (!bootcamp)
+  if (!bootcamp) {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
+  }
+
   res.status(200).json({
     success: true,
     data: bootcamp
@@ -33,6 +36,7 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.createBootcamp = asyncHandler(async (req, res, next) => {
   const createdBootcamp = await Bootcamp.create(req.body);
+
   res.status(201).json({
     success: true,
     data: createdBootcamp
@@ -51,10 +55,13 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
       runValidators: true
     }
   );
-  if (!updatedBootcamp)
+
+  if (!updatedBootcamp) {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
+  }
+
   res.status(200).json({
     success: true,
     data: updatedBootcamp
@@ -66,11 +73,15 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   const deletedBootcamp = await Bootcamp.findById(req.params.id);
-  if (!deletedBootcamp)
+
+  if (!deletedBootcamp) {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
+  }
+
   deletedBootcamp.remove();
+
   res.status(200).json({
     success: true,
     data: deletedBootcamp.id
@@ -109,27 +120,33 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
-  if (!bootcamp)
+
+  if (!bootcamp) {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
+  }
 
-  if (!req.files) return next(new ErrorResponse(`Please upload a file`, 400));
+  if (!req.files) {
+    return next(new ErrorResponse(`Please upload a file`, 400));
+  }
 
   const { file } = req.files;
 
   // Make sure the image is a photo
-  if (!file.mimetype.startsWith('image'))
+  if (!file.mimetype.startsWith('image')) {
     return next(new ErrorResponse(`Please upload an image file`, 400));
+  }
 
   // Check file size
-  if (file.size > process.env.MAX_FILE_UPLOAD)
+  if (file.size > process.env.MAX_FILE_UPLOAD) {
     return next(
       new ErrorResponse(
         `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
         400
       )
     );
+  }
 
   // Create custom filename
   file.name = `photo_${bootcamp._id}${path.parse(file.name).ext}`;
