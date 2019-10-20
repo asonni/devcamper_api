@@ -6,6 +6,9 @@ const dotenv = require('dotenv');
 // Load env vars
 dotenv.config({ path: './config/config.env' });
 
+// Enable colors
+colors.enable();
+
 // Load models
 const Bootcamp = require('./models/Bootcamp');
 const Course = require('./models/Course');

@@ -20,6 +20,9 @@ dotenv.config({ path: './config/config.env' });
 // Connect to database
 connectDB();
 
+// Enable colors
+colors.enable();
+
 // Route files
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
