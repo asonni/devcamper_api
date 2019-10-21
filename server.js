@@ -51,6 +51,16 @@ app.use(mongoSanitize());
 // Set security headers
 app.use(helmet());
 
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      // defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"]
+    }
+  })
+);
+
 // Prevent XSS attacks
 app.use(xss());
 
