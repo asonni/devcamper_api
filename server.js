@@ -11,6 +11,7 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
+const Sentry = require('@sentry/node');
 
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
@@ -30,6 +31,16 @@ const auth = require('./routes/auth');
 const users = require('./routes/users');
 const reviews = require('./routes/reviews');
 const app = express();
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN
+});
+
+// The request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler());
+
+// The error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
 
 // Body parser
 app.use(express.json());
