@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const gravatar = require('gravatar');
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -19,7 +20,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'publisher'],
+    enum: ['admin', 'user', 'publisher'],
     default: 'user'
   },
   password: {
@@ -28,6 +29,7 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false
   },
+  avatar: String,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
@@ -43,6 +45,15 @@ UserSchema.pre('save', async function(next) {
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Upload avatar from gravatar
+UserSchema.pre('save', async function(next) {
+  this.avatar = await gravatar.url(this.email, {
+    s: '200',
+    r: 'pg',
+    d: 'mm'
+  });
 });
 
 // Sign JWT and return
