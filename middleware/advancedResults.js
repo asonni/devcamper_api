@@ -3,7 +3,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   // Copy req.query
   const reqQuery = { ...req.query };
   // Fields to exclude
-  const removeFields = ["select", "sort", "page", "limit"];
+  const removeFields = ['select', 'sort', 'page', 'limit'];
   // Loop over removeFields and delete them from reQuery
   removeFields.forEach(param => delete reqQuery[param]);
   // Create query string
@@ -14,17 +14,17 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   query = model.find(JSON.parse(queryStr));
   // Select Fields
   if (req.query.select) {
-    const fields = req.query.select.split(",").join(" ");
+    const fields = req.query.select.split(',').join(' ');
     query = query.select(fields);
   } else {
-    query = query.select("-__v");
+    query = query.select('-__v');
   }
   // Sort
   if (req.query.sort) {
-    const sortBy = req.query.sort.split(",").join(" ");
+    const sortBy = req.query.sort.split(',').join(' ');
     query = query.sort(sortBy);
   } else {
-    query = query.sort("-createdAt");
+    query = query.sort('-createdAt');
   }
   // Pagination
   const page = parseInt(req.query.page, 10) || 1;

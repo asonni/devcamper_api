@@ -1,7 +1,7 @@
-const Review = require("../models/Review");
-const Bootcamp = require("../models/Bootcamp");
-const ErrorResponse = require("../utils/errorResponse");
-const asyncHandler = require("../middleware/async");
+const Review = require('../models/Review');
+const Bootcamp = require('../models/Bootcamp');
+const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
 
 // @desc      Get all reviews
 // @route     GET /api/v1/reviews
@@ -26,8 +26,8 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
-    path: "bootcamp",
-    select: "name description"
+    path: 'bootcamp',
+    select: 'name description'
   });
 
   if (!review) {
@@ -81,7 +81,7 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
   }
 
   // Make sure review belongs to user or user is admin
-  if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
+  if (review.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(new ErrorResponse(`Not authorized to update review`, 401));
   }
 
@@ -109,7 +109,7 @@ exports.deleteReview = asyncHandler(async (req, res, next) => {
   }
 
   // Make sure review belongs to user or user is admin
-  if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
+  if (review.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(new ErrorResponse(`Not authorized to delete review`, 401));
   }
 
