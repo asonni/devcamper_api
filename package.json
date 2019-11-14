@@ -16,7 +16,7 @@
   "author": "Aladdin Sonni",
   "license": "MIT",
   "dependencies": {
-    "@sentry/node": "5.7.1",
+    "@sentry/node": "5.9.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.4",
@@ -30,7 +30,7 @@
     "helmet": "^3.21.2",
     "hpp": "^0.2.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.9",
+    "mongoose": "^5.7.10",
     "morgan": "^1.9.1",
     "node-geocoder": "^3.25.0",
     "nodemailer": "^6.3.1",
@@ -38,12 +38,15 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
     "nodemon": "^1.19.4",
     "prettier": "^1.19.1"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "tabWidth": 2,
-    "useTabs": false
   }
 }
