@@ -99,14 +99,13 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
 app.use('/api/v1/reviews', reviews);
 
-app.use(errorHandler);
-
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    success: false,
-    message: `Can't find ${req.originalUrl} on this server!`
-  });
+  const err = new Error(`Can't find ${req.originalUrl} on this server!`);
+  err.statusCode = 404;
+  errorHandler(err, req, res, next);
 });
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
