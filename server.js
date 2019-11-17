@@ -12,6 +12,7 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
+const ErrorResponse = require('./utils/errorResponse');
 
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
@@ -100,9 +101,7 @@ app.use('/api/v1/users', users);
 app.use('/api/v1/reviews', reviews);
 
 app.all('*', (req, res, next) => {
-  const err = new Error(`Can't find ${req.originalUrl} on this server!`);
-  err.statusCode = 404;
-  errorHandler(err, req, res, next);
+  next(new ErrorResponse(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 app.use(errorHandler);
