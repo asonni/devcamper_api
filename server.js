@@ -30,6 +30,7 @@ const courses = require('./routes/courses');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
 const reviews = require('./routes/reviews');
+
 const app = express();
 
 Sentry.init({
@@ -103,13 +104,15 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(
     `Server running ${process.env.NODE_ENV} mode in on port ${PORT}`.yellow.bold
   );
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
+process.on('unhandledRejection', err => {
+  // eslint-disable-next-line no-console
   console.log(`Error: ${err.message}`.red.bold);
   // Close server & exit process
   server.close(() => process.exit(1));

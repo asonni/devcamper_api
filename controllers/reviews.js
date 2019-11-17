@@ -16,9 +16,8 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
       count: reviews.length,
       data: reviews
     });
-  } else {
-    res.status(200).json(res.advancedResults);
   }
+  res.status(200).json(res.advancedResults);
 });
 
 // @desc      Get single review

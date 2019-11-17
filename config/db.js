@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const connectDB = async () => {
   const conn = await mongoose.connect(process.env.MONGO_URI, {
@@ -7,6 +7,7 @@ const connectDB = async () => {
     useFindAndModify: false,
     useUnifiedTopology: true
   });
+  // eslint-disable-next-line no-console
   console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold);
 };
 

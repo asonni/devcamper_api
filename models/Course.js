@@ -21,7 +21,10 @@ const CourseSchema = new mongoose.Schema({
   minimumSkill: {
     type: String,
     required: [true, 'Please add a minimum skill'],
-    enum: ['beginner', 'intermediate', 'advanced']
+    enum: {
+      values: ['beginner', 'intermediate', 'advanced'],
+      message: 'Minimum Skill is either: beginner, intermediate, advanced'
+    }
   },
   scholarshipAvailable: {
     type: Boolean,
@@ -62,6 +65,7 @@ CourseSchema.statics.getAverageCost = async function(bootcampId) {
       averageCost: Math.ceil(obj[0].averageCost / 10) * 10
     });
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err);
   }
 };

@@ -4,14 +4,15 @@
   "description": "DevCamper Backend API",
   "main": "server.js",
   "engines": {
-    "node": "12.13.0",
-    "npm": "6.12.0",
-    "yarn": "1.19.1"
+    "node": ">=12.13.0",
+    "npm": ">=6.12.0",
+    "yarn": ">=1.19.1"
   },
   "scripts": {
     "start": "NODE_ENV=production node server",
     "dev": "nodemon server",
-    "seed": "node seeder -d && node seeder -i && npm run dev"
+    "seed": "node seeder -d && node seeder -i && npm run dev",
+    "lint": "eslint ./"
   },
   "author": "Aladdin Sonni",
   "license": "MIT",

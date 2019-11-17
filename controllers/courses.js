@@ -16,9 +16,8 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
       count: courses.length,
       data: courses
     });
-  } else {
-    res.status(200).json(res.advancedResults);
   }
+  res.status(200).json(res.advancedResults);
 });
 
 // @desc      Get single courses

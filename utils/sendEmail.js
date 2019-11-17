@@ -19,6 +19,7 @@ const sendEmail = async options => {
 
   const info = await transporter.sendMail(message);
 
+  // eslint-disable-next-line no-console
   console.log('Message sent: %s', info.messageId);
 };
 

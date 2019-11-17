@@ -14,13 +14,17 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Please add an email'],
     unique: true,
     match: [
+      // eslint-disable-next-line no-useless-escape
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       'Please add a valid email'
     ]
   },
   role: {
     type: String,
-    enum: ['admin', 'user', 'publisher'],
+    enum: {
+      values: ['admin', 'user', 'publisher'],
+      message: 'Role is either: admin, user, publisher'
+    },
     default: 'user'
   },
   password: {

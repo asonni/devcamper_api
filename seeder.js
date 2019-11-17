@@ -44,9 +44,11 @@ const importData = async () => {
     await Course.create(courses);
     await User.create(users);
     await Review.create(reviews);
+    // eslint-disable-next-line no-console
     console.log('Data Imported...'.green.inverse);
     process.exit();
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 };
@@ -58,9 +60,11 @@ const deleteData = async () => {
     await Course.deleteMany();
     await User.deleteMany();
     await Review.deleteMany();
+    // eslint-disable-next-line no-console
     console.log('Data Destroyed...'.red.inverse);
     process.exit();
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 };

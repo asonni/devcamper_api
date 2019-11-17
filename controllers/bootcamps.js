@@ -197,6 +197,7 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
     if (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
       return next(new ErrorResponse(`Problem with file upload`, 500));
     }

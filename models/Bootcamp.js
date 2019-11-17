@@ -20,6 +20,7 @@ const BootcampSchema = new mongoose.Schema(
     website: {
       type: String,
       match: [
+        // eslint-disable-next-line no-useless-escape
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
         'Please use a valid URL with HTTP or HTTPS'
       ]
@@ -31,6 +32,7 @@ const BootcampSchema = new mongoose.Schema(
     email: {
       type: String,
       match: [
+        // eslint-disable-next-line no-useless-escape
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         'Please add a valid email'
       ]
@@ -60,14 +62,18 @@ const BootcampSchema = new mongoose.Schema(
       // Array of strings
       type: [String],
       required: true,
-      enum: [
-        'Web Development',
-        'Mobile Development',
-        'UI/UX',
-        'Data Science',
-        'Business',
-        'Other'
-      ]
+      enum: {
+        values: [
+          'Web Development',
+          'Mobile Development',
+          'UI/UX',
+          'Data Science',
+          'Business',
+          'Other'
+        ],
+        message:
+          'Careers are either: Web Development, Mobile Development, UI/UX, Data Science, Business or Other'
+      }
     },
     averageRating: {
       type: Number,
@@ -137,7 +143,6 @@ BootcampSchema.pre('save', async function(next) {
 
 // Cascade delete courses when a bootcamp is deleted
 BootcampSchema.pre('remove', async function(next) {
-  console.log(`Courses being removed from bootcamp ${this._id}`);
   await this.model('Course').deleteMany({ bootcamp: this._id });
   next();
 });

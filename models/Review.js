@@ -55,6 +55,7 @@ ReviewSchema.statics.getAverageRating = async function(bootcampId) {
       averageRating: obj[0].averageRating
     });
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err);
   }
 };

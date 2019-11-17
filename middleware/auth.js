@@ -26,6 +26,7 @@ exports.protect = asyncHandler(async (req, _, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    // eslint-disable-next-line no-console
     console.log(decoded);
 
     req.user = await User.findById(decoded.id);

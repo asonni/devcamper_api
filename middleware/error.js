@@ -6,7 +6,10 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log to console for dev
-  console.log(err);
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
 
   // Mongoose bad ObjectId
   if (err.name === 'CastError') {
