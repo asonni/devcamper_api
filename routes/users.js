@@ -2,13 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser
-} = require('../controllers/users');
+const userController = require('../controllers/users');
 
 const User = require('../models/User');
 
@@ -20,13 +14,13 @@ router.use(authorize('admin'));
 
 router
   .route('/')
-  .get(advancedResults(User), getUsers)
-  .post(createUser);
+  .get(advancedResults(User), userController.getUsers)
+  .post(userController.createUser);
 
 router
   .route('/:id')
-  .get(getUser)
-  .put(updateUser)
-  .delete(deleteUser);
+  .get(userController.getUser)
+  .put(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;

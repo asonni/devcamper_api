@@ -2,13 +2,7 @@ const express = require('express');
 
 const router = express.Router({ mergeParams: true });
 
-const {
-  getCourses,
-  getCourse,
-  createCourse,
-  updateCourse,
-  deleteCourse
-} = require('../controllers/courses');
+const courseController = require('../controllers/courses');
 
 const Course = require('../models/Course');
 
@@ -22,14 +16,22 @@ router
       path: 'bootcamp',
       select: 'name description'
     }),
-    getCourses
+    courseController.getCourses
   )
-  .post(protect, authorize('publisher', 'admin'), createCourse);
+  .post(
+    protect,
+    authorize('publisher', 'admin'),
+    courseController.createCourse
+  );
 
 router
   .route('/:id')
-  .get(getCourse)
-  .put(protect, authorize('publisher', 'admin'), updateCourse)
-  .delete(protect, authorize('publisher', 'admin'), deleteCourse);
+  .get(courseController.getCourse)
+  .put(protect, authorize('publisher', 'admin'), courseController.updateCourse)
+  .delete(
+    protect,
+    authorize('publisher', 'admin'),
+    courseController.deleteCourse
+  );
 
 module.exports = router;

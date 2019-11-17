@@ -2,13 +2,7 @@ const express = require('express');
 
 const router = express.Router({ mergeParams: true });
 
-const {
-  getReviews,
-  getReview,
-  createReview,
-  updateReview,
-  deleteReview
-} = require('../controllers/reviews');
+const reviewController = require('../controllers/reviews');
 
 const Review = require('../models/Review');
 
@@ -22,14 +16,14 @@ router
       path: 'bootcamp',
       select: 'name description'
     }),
-    getReviews
+    reviewController.getReviews
   )
-  .post(protect, authorize('user', 'admin'), createReview);
+  .post(protect, authorize('user', 'admin'), reviewController.createReview);
 
 router
   .route('/:id')
-  .get(getReview)
-  .put(protect, authorize('user', 'admin'), updateReview)
-  .delete(protect, authorize('user', 'admin'), deleteReview);
+  .get(reviewController.getReview)
+  .put(protect, authorize('user', 'admin'), reviewController.updateReview)
+  .delete(protect, authorize('user', 'admin'), reviewController.deleteReview);
 
 module.exports = router;
