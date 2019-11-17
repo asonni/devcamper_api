@@ -101,6 +101,13 @@ app.use('/api/v1/reviews', reviews);
 
 app.use(errorHandler);
 
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: `Can't find ${req.originalUrl} on this server!`
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
