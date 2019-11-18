@@ -12,8 +12,17 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
-const ErrorResponse = require('./utils/errorResponse');
 
+process.on('uncaughtException', err => {
+  // eslint-disable-next-line no-console
+  console.log('UNCAUGHT EXCEPTION! Shutting down...'.red.bold);
+  // eslint-disable-next-line no-console
+  console.log(err.name, err.message);
+  // exit process
+  process.exit(1);
+});
+
+const ErrorResponse = require('./utils/errorResponse');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 // Load env vars
@@ -118,7 +127,9 @@ const server = app.listen(PORT, () => {
 // Handle unhandled promise rejections
 process.on('unhandledRejection', err => {
   // eslint-disable-next-line no-console
-  console.log(`Error: ${err.message}`.red.bold);
+  console.log('UNHANDLED REJECTION! Shutting down...'.red.bold);
+  // eslint-disable-next-line no-console
+  console.log(err.name, err.message);
   // Close server & exit process
   server.close(() => process.exit(1));
 });

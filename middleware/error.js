@@ -11,9 +11,7 @@ const handleDuplicateFieldsDB = err => {
   return new ErrorResponse(message, 400);
 };
 const handleValidationErrorDB = err => {
-  const errors = Object.values(err.errors).map(el => el.message);
-
-  const message = `Invalid input data. ${errors.join('. ')}`;
+  const message = Object.values(err.errors).map(el => el.message);
   return new ErrorResponse(message, 400);
 };
 
@@ -36,6 +34,7 @@ const sendErrorProd = (err, res) => {
     // Programming or other unknown error: don't leak error details
   } else {
     // 1) Log error
+    // eslint-disable-next-line no-console
     console.error('ERROR 💥', err);
     // 2) Send generic message
     res.status(500).json({
