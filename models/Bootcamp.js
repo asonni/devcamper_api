@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const validator = require('validator');
+
 const geocoder = require('../utils/geocoder');
 
 const BootcampSchema = new mongoose.Schema(
@@ -19,11 +21,11 @@ const BootcampSchema = new mongoose.Schema(
     },
     website: {
       type: String,
-      match: [
-        // eslint-disable-next-line no-useless-escape
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
-        'Please use a valid URL with HTTP or HTTPS'
-      ]
+      validate: {
+        validator: val =>
+          validator.isURL(val, { protocols: ['http', 'https'] }),
+        message: 'Please use a valid URL with HTTP or HTTPS'
+      }
     },
     phone: {
       type: String,
@@ -31,11 +33,8 @@ const BootcampSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      match: [
-        // eslint-disable-next-line no-useless-escape
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please add a valid email'
-      ]
+      lowercase: true,
+      validator: [validator.isEmail, 'Please add a valid email']
     },
     address: {
       type: String,

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const gravatar = require('gravatar');
+const validator = require('validator');
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -13,11 +14,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an email'],
     unique: true,
-    match: [
-      // eslint-disable-next-line no-useless-escape
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please add a valid email'
-    ]
+    lowercase: true,
+    validate: [validator.isEmail, 'Please add a valid email']
   },
   role: {
     type: String,
@@ -32,6 +30,10 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Please add a password'],
     minlength: 6,
     select: false
+  },
+  passwordConfirm: {
+    type: String,
+    required: [true, 'Please confirm your password']
   },
   avatar: String,
   resetPasswordToken: String,
