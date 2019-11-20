@@ -1216,10 +1216,10 @@ eslint-config-airbnb@^18.0.1:
     object.assign "^4.1.0"
     object.entries "^1.1.0"
 
-eslint-config-prettier@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.5.0.tgz#aaf9a495e2a816865e541bfdbb73a65cc162b3eb"
-  integrity sha512-cjXp8SbO9VFGW/Z7mbTydqS9to8Z58E5aYhj3e1+Hx7lS9s6gL5ILKNpCqZAFOVYRcSkWPFYljHrEh8QFEK5EQ==
+eslint-config-prettier@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.7.0.tgz#9a876952e12df2b284adbd3440994bf1f39dfbb9"
+  integrity sha512-FamQVKM3jjUVwhG4hEMnbtsq7xOIDm+SY5iBPfR8gKsJoAB2IQnNF+bk1+8Fy44Nq7PPJaLvkRxILYdJWoguKQ==
   dependencies:
     get-stdin "^6.0.0"
 
@@ -1478,10 +1478,10 @@ expect-ct@0.2.0:
   resolved "https://registry.yarnpkg.com/expect-ct/-/expect-ct-0.2.0.tgz#3a54741b6ed34cc7a93305c605f63cd268a54a62"
   integrity sha512-6SK3MG/Bbhm8MsgyJAylg+ucIOU71/FzyFalcfu5nY19dH8y/z0tBJU0wrNBXD4B27EoQtqPF/9wqH0iYAd04g==
 
-express-fileupload@^1.1.6-alpha.5:
-  version "1.1.6-alpha.6"
-  resolved "https://registry.yarnpkg.com/express-fileupload/-/express-fileupload-1.1.6-alpha.6.tgz#75c6c397094a15165fb7b42e4905f95302e7d009"
-  integrity sha512-gG5qrVDGI6i00CuViSl3zdQVcydU74qikNkBpxgyMtDbshbX7wPRZ3hy2sdZEOgxVokrevJ22U6Dd4mdxTsLaQ==
+express-fileupload@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/express-fileupload/-/express-fileupload-1.1.6.tgz#0ac2659ad8c1128c92c8580fd6e15b8b15343db0"
+  integrity sha512-w24zPWT8DkoIxSVkbxYPo9hkTiLpCQQzNsLRTCnecBhfbYv+IkIC5uLw2MIUAxBZ+7UMmXPjGxlhzUXo4RcbZw==
   dependencies:
     busboy "^0.3.1"
 
@@ -3026,10 +3026,10 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mongodb@3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.3.3.tgz#509cad2225a1c56c65a331ed73a0d5d4ed5cbe67"
-  integrity sha512-MdRnoOjstmnrKJsK8PY0PjP6fyF/SBS4R8coxmhsfEU7tQ46/J6j+aSHF2n4c2/H8B+Hc/Klbfp8vggZfI0mmA==
+mongodb@3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.3.4.tgz#f52eec4a04005101e63715d4d1f67bf784fa0aef"
+  integrity sha512-6fmHu3FJTpeZxacJcfjUGIP3BSteG0l2cxLkSrf1nnnS1OrlnVGiP9P/wAC4aB6dM6H4vQ2io8YDjkuPkje7AA==
   dependencies:
     bson "^1.1.1"
     require_optional "^1.0.1"
@@ -3042,14 +3042,14 @@ mongoose-legacy-pluralize@1.0.2:
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
 
-mongoose@^5.7.10:
-  version "5.7.10"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.7.10.tgz#92bf817f50cf56211f85a079445257a4cc55271f"
-  integrity sha512-KpQosHPXmlNJKZbiP19mtmC0icaziRlB+xZ14R8q7jY7+OgbbynLD9VWSFb1CyzJX5ebdkVSGmay9HXn341hTA==
+mongoose@^5.7.11:
+  version "5.7.11"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.7.11.tgz#74a1293deb7a69d41abd447056f5d522e28bab64"
+  integrity sha512-KpXGBTXQTKfTlePpZMY+FBsk9wiyp2gzfph9AsLPfWleK1x2GJY+6xpKx2kKIgLustgNq16OOrqwlAOGUbv3kg==
   dependencies:
     bson "~1.1.1"
     kareem "2.3.1"
-    mongodb "3.3.3"
+    mongodb "3.3.4"
     mongoose-legacy-pluralize "1.0.2"
     mpath "0.6.0"
     mquery "3.2.2"
