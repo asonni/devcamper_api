@@ -17,7 +17,7 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
       data: courses
     });
   }
-  res.status(200).json(res.advancedResults);
+  return res.status(200).json(res.advancedResults);
 });
 
 // @desc      Get single courses
@@ -35,7 +35,7 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: course
   });
@@ -63,7 +63,7 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
-        `User ${req.user.id} is not authorized to add a course to bootcamp ${bootcamp._id}`,
+        `User ${req.user.id} is not authorized to add a course to bootcamp ${bootcamp.id}`,
         401
       )
     );
@@ -71,7 +71,7 @@ exports.createCourse = asyncHandler(async (req, res, next) => {
 
   const course = await Course.create(req.body);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: course
   });
@@ -93,7 +93,7 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
   if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
-        `User ${req.user.id} is not authorized to update course ${course._id}`,
+        `User ${req.user.id} is not authorized to update course ${course.id}`,
         401
       )
     );
@@ -104,7 +104,7 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
     runValidators: true
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: course
   });
@@ -126,7 +126,7 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
   if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
-        `User ${req.user.id} is not authorized to delete course ${course._id}`,
+        `User ${req.user.id} is not authorized to delete course ${course.id}`,
         401
       )
     );
@@ -134,7 +134,7 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
 
   await course.remove();
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: course.id
   });

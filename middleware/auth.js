@@ -4,13 +4,13 @@ const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
 
 // Protect routes
-exports.protect = asyncHandler(async (req, _, next) => {
+exports.protect = asyncHandler(async (req, res, next) => {
   let token;
   const { authorization } = req.headers;
 
   if (authorization && authorization.startsWith('Bearer')) {
     // Set token from Bearer token in header
-    token = authorization.split(' ')[1];
+    [, token] = authorization.split(' ');
     // Set token from cookie
   }
   // else if (req.cookies.token) {
@@ -31,14 +31,14 @@ exports.protect = asyncHandler(async (req, _, next) => {
 
     req.user = await User.findById(decoded.id);
 
-    next();
+    return next();
   } catch (error) {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 });
 
 // Grant access to specific roles
-exports.authorize = (...roles) => (req, _, next) => {
+exports.authorize = (...roles) => (req, res, next) => {
   if (!roles.includes(req.user.role)) {
     return next(
       new ErrorResponse(
@@ -47,5 +47,5 @@ exports.authorize = (...roles) => (req, _, next) => {
       )
     );
   }
-  next();
+  return next();
 };

@@ -17,7 +17,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
       data: reviews
     });
   }
-  res.status(200).json(res.advancedResults);
+  return res.status(200).json(res.advancedResults);
 });
 
 // @desc      Get single review
@@ -35,7 +35,7 @@ exports.getReview = asyncHandler(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: review
   });
@@ -61,7 +61,7 @@ exports.createReview = asyncHandler(async (req, res, next) => {
 
   const review = await Review.create(req.body);
 
-  res.status(201).json({
+  return res.status(201).json({
     success: true,
     data: review
   });
@@ -89,7 +89,7 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
     runValidators: true
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: review
   });
@@ -114,7 +114,7 @@ exports.deleteReview = asyncHandler(async (req, res, next) => {
 
   review = await review.remove();
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: review.id
   });

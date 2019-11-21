@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -36,7 +37,7 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Please confirm your password'],
     validate: {
       // This only works on CREATE and SAVE!!!
-      validator: function(el) {
+      validator(el) {
         return el === this.password;
       },
       message: 'Passwords do not match'
@@ -63,10 +64,11 @@ UserSchema.pre('save', async function(next) {
   this.password = await bcrypt.hash(this.password, salt);
   // Delete passwordConfirm field
   this.passwordConfirm = undefined;
+  return next();
 });
 
 // Upload avatar from gravatar
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function() {
   this.avatar = await gravatar.url(this.email, {
     s: '200',
     r: 'pg',
@@ -78,7 +80,7 @@ UserSchema.pre('save', async function(next) {
 UserSchema.methods.getSignedJwtToken = function() {
   return jwt.sign(
     {
-      id: this._id,
+      id: this.id,
       name: this.name,
       email: this.email,
       role: this.role

@@ -25,7 +25,7 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: bootcamp
   });
@@ -53,7 +53,7 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 
   const bootcamp = await Bootcamp.create(req.body);
 
-  res.status(201).json({
+  return res.status(201).json({
     success: true,
     data: bootcamp
   });
@@ -86,7 +86,7 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
     runValidators: true
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: bootcamp
   });
@@ -116,7 +116,7 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 
   bootcamp.remove();
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: bootcamp.id
   });
@@ -142,7 +142,7 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
     location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     count: bootcamps.length,
     data: bootcamps
@@ -193,7 +193,7 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   }
 
   // Create custom filename
-  file.name = `photo_${bootcamp._id}${path.parse(file.name).ext}`;
+  file.name = `photo_${bootcamp.id}${path.parse(file.name).ext}`;
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
     if (err) {
@@ -206,9 +206,11 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
       photo: file.name
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: file.name
     });
   });
+
+  return next();
 });

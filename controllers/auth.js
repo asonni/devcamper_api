@@ -21,7 +21,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
-  res
+  return res
     .status(statusCode)
     .cookie('token', token, options)
     .json({
@@ -69,7 +69,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return next(new ErrorResponse('Invalid credentials', 401));
   }
-  sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, res);
 });
 
 // @desc      Log user out / clear cookie
@@ -81,7 +81,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
     httpOnly: true
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: {}
   });
@@ -93,7 +93,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: user
   });
@@ -113,7 +113,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     runValidators: true
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: user
   });
@@ -133,7 +133,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   user.password = req.body.newPassword;
   await user.save();
 
-  sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, res);
 });
 
 // @desc      Forgot password
@@ -177,7 +177,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Email could not be sent', 500));
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: user
   });
@@ -208,5 +208,5 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
   await user.save();
 
-  sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, res);
 });
