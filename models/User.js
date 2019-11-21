@@ -33,7 +33,14 @@ const UserSchema = new mongoose.Schema({
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'Please confirm your password']
+    required: [true, 'Please confirm your password'],
+    validate: {
+      // This only works on CREATE and SAVE!!!
+      validator: function(el) {
+        return el === this.password;
+      },
+      message: 'Passwords do not match'
+    }
   },
   avatar: String,
   resetPasswordToken: String,
@@ -46,11 +53,16 @@ const UserSchema = new mongoose.Schema({
 
 // Encrypt password using bcrypt
 UserSchema.pre('save', async function(next) {
+  // Only run this function if password was actually modified
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
+  // Generate salt with cost of 10
   const salt = await bcrypt.genSalt(10);
+  // Hash the password with salt
   this.password = await bcrypt.hash(this.password, salt);
+  // Delete passwordConfirm field
+  this.passwordConfirm = undefined;
 });
 
 // Upload avatar from gravatar
