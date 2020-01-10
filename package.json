@@ -12,7 +12,8 @@
     "start": "NODE_ENV=production node server",
     "dev": "nodemon server",
     "seed": "node seeder -d && node seeder -i && npm run dev",
-    "lint": "eslint ./"
+    "lint:check": "eslint ./",
+    "lint:fix": "eslint ./ --fix"
   },
   "author": "Aladdin Sonni",
   "license": "MIT",
