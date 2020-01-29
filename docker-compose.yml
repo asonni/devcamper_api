@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+
+  # Backend API
+  devcamper-api:
+    container_name: backend
+    build: ./
+    command: npm run dev
+    working_dir: /usr/src/devcamper_api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/usr/src/devcamper_api
