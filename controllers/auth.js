@@ -21,13 +21,10 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
-  return res
-    .status(statusCode)
-    .cookie('token', token, options)
-    .json({
-      success: true,
-      token
-    });
+  return res.status(statusCode).cookie('token', token, options).json({
+    success: true,
+    token
+  });
 };
 
 // @desc      Register user
@@ -74,7 +71,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 // @desc      Log user out / clear cookie
 // @route     GET /api/v1/auth/logout
-// @access    Private
+// @access    Public
 exports.logout = asyncHandler(async (req, res, next) => {
   res.cookie('token', 'none', {
     expires: new Date(Date.now() + 10 * 1000),
@@ -88,7 +85,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Get current logged in user
-// @route     POST /api/v1/auth/me
+// @route     GET /api/v1/auth/me
 // @access    Private
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);

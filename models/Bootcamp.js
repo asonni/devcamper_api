@@ -118,13 +118,13 @@ const BootcampSchema = new mongoose.Schema(
 );
 
 // Create bootcamp slug from the name
-BootcampSchema.pre('save', function(next) {
+BootcampSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
 // Geocode & create location field
-BootcampSchema.pre('save', async function(next) {
+BootcampSchema.pre('save', async function (next) {
   const loc = await geocoder.geocode(this.address);
   this.location = {
     type: 'Point',
@@ -142,7 +142,7 @@ BootcampSchema.pre('save', async function(next) {
 });
 
 // Cascade delete courses when a bootcamp is deleted
-BootcampSchema.pre('remove', async function(next) {
+BootcampSchema.pre('remove', async function (next) {
   await this.model('Course').deleteMany({ bootcamp: this.id });
   next();
 });
