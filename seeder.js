@@ -16,12 +16,8 @@ const User = require('./models/User');
 const Review = require('./models/Review');
 
 // Connect to DB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
-});
+mongoose.set('strictQuery', true);
+mongoose.connect(process.env.MONGO_URI);
 
 // Read JSON files
 const bootcamps = JSON.parse(
