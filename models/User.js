@@ -7,6 +7,7 @@ const gravatar = require('gravatar');
 const validator = require('validator');
 
 const UserSchema = new mongoose.Schema({
+  avatar: String,
   name: {
     type: String,
     required: [true, 'Please add a name']
@@ -44,7 +45,6 @@ const UserSchema = new mongoose.Schema({
     }
   },
   passwordChangedAt: Date,
-  avatar: String,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
