@@ -29,6 +29,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
     console.log(decoded);
 
     req.user = await User.findById(decoded.id);
+    
+    req.user.changedPasswordAfter(decoded,iat);
 
     return next();
   } catch (error) {
