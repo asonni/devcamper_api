@@ -69,12 +69,19 @@ UserSchema.pre('save', async function(next) {
 });
 
 // Upload avatar from gravatar
-UserSchema.pre('save', async function() {
+UserSchema.pre('save', async function(next) {
   this.avatar = await gravatar.url(this.email, {
     s: '200',
     r: 'pg',
     d: 'mm'
   });
+});
+
+UserSchema.pre('save', async function(next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
 });
 
 // Sign JWT and return
