@@ -28,9 +28,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
     // eslint-disable-next-line no-console
     console.log(decoded);
 
-    req.user = await User.findById(decoded.id);
+    const currentUser = await User.findById(decoded.id);
     
-    req.user.changedPasswordAfter(decoded,iat);
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+      return next(new ErrorResponse('User recently changed password! Please login again.', 401));
+    }
+
+    req.user = currentUser;
 
     return next();
   } catch (error) {
