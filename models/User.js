@@ -43,6 +43,7 @@ const UserSchema = new mongoose.Schema({
       message: 'Passwords do not match'
     }
   },
+  passwordChangedAt: Date,
   avatar: String,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
@@ -96,6 +97,17 @@ UserSchema.methods.getSignedJwtToken = function() {
 UserSchema.methods.matchPassword = async function(enteredPassword) {
   const matchPassword = await bcrypt.compare(enteredPassword, this.password);
   return matchPassword;
+};
+
+// Check if user has changed his/her password
+UserSchema.methods.changedPasswordAfter = async function(JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+    return JWTTimestamp < changedTimestamp;
+  }
+  
+  // False means NOT changed
+  return false;
 };
 
 // Generate and hash password token
