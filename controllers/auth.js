@@ -130,6 +130,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   }
 
   user.password = req.body.newPassword;
+  user.passwordChangedAt = new Date();
   await user.save();
 
   return sendTokenResponse(user, 200, res);
@@ -203,6 +204,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   // Set new password
   user.password = req.body.password;
+  user.passwordChangedAt = new Date();
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
   await user.save();
