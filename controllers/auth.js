@@ -5,6 +5,14 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const sendEmail = require('../utils/sendEmail');
 
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach(el => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token
@@ -102,10 +110,17 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-  const fieldsToUpdate = {
-    name: req.body.name,
-    email: req.body.email
-  };
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(
+      new ErrorResponse(
+        'This route is not for password updates. Please use PUT /updatepassword API',
+        400
+      )
+    );
+  }
+
+  // Filtered out unwanted fields names that are not allowed to be updated
+  const fieldsToUpdate = filterObj(req.body, 'name', 'email');
 
   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
     new: true,
@@ -126,10 +141,11 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
   // Check current password
   if (!(await user.matchPassword(req.body.currentPassword))) {
-    return next(new ErrorResponse('Password is incorrect', 401));
+    return next(new ErrorResponse('Your current password is incorrect', 401));
   }
 
   user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
 
   return sendTokenResponse(user, 200, res);
@@ -198,11 +214,12 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(new ErrorResponse('Invalid token', 400));
+    return next(new ErrorResponse('Invalid token or has expired', 400));
   }
 
   // Set new password
   user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
   await user.save();

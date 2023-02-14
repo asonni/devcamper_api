@@ -54,7 +54,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Encrypt password using bcrypt
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) {
     return next();
@@ -69,7 +69,7 @@ UserSchema.pre('save', async function(next) {
 });
 
 // Upload avatar from gravatar
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
   this.avatar = await gravatar.url(this.email, {
     s: '200',
     r: 'pg',
@@ -77,15 +77,15 @@ UserSchema.pre('save', async function(next) {
   });
 });
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
-  next();
+  return next();
 });
 
 // Sign JWT and return
-UserSchema.methods.getSignedJwtToken = function() {
+UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign(
     {
       id: this.id,
@@ -101,24 +101,27 @@ UserSchema.methods.getSignedJwtToken = function() {
 };
 
 // Match user entered password to hashed password in database
-UserSchema.methods.matchPassword = async function(enteredPassword) {
+UserSchema.methods.matchPassword = async function (enteredPassword) {
   const matchPassword = await bcrypt.compare(enteredPassword, this.password);
   return matchPassword;
 };
 
 // Check if user has changed his/her password
-UserSchema.methods.changedPasswordAfter = async function(JWTTimestamp) {
+UserSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
-    const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
     return JWTTimestamp < changedTimestamp;
   }
-  
+
   // False means NOT changed
   return false;
 };
 
 // Generate and hash password token
-UserSchema.methods.getResetPasswordToken = function() {
+UserSchema.methods.getResetPasswordToken = function () {
   // Generate token
   const resetToken = crypto.randomBytes(20).toString('hex');
 

@@ -5,7 +5,8 @@
     "email": "admin@gmail.com",
     "role": "admin",
     "password": "123456",
-    "passwordConfirm": "123456"
+    "passwordConfirm": "123456",
+    "passwordChangedAt": "2023-02-13"
   },
   {
     "_id": "5d7a514b5d2c12c7449be043",

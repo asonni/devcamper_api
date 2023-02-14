@@ -1,3 +1,4 @@
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('./async');
 const ErrorResponse = require('../utils/errorResponse');
@@ -21,36 +22,45 @@ exports.protect = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 
-  try {
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  // Verify token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-    // eslint-disable-next-line no-console
-    console.log(decoded);
+  const currentUser = await User.findById(decoded.id);
 
-    const currentUser = await User.findById(decoded.id);
-    
-    if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return next(new ErrorResponse('User recently changed password! Please login again.', 401));
-    }
-
-    req.user = currentUser;
-
-    return next();
-  } catch (error) {
-    return next(new ErrorResponse('Not authorized to access this route', 401));
-  }
-});
-
-// Grant access to specific roles
-exports.authorize = (...roles) => (req, res, next) => {
-  if (!roles.includes(req.user.role)) {
+  if (!currentUser) {
     return next(
       new ErrorResponse(
-        `User role ${req.user.role} is not authorized to access this route`,
-        403
+        'The user belonging th this token does no longer exist.',
+        401
       )
     );
   }
+
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new ErrorResponse(
+        'User recently changed password! Please login again.',
+        401
+      )
+    );
+  }
+
+  req.user = currentUser;
+
   return next();
-};
+});
+
+// Grant access to specific roles
+exports.authorize =
+  (...roles) =>
+  (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ErrorResponse(
+          `User role ${req.user.role} is not authorized to access this route`,
+          403
+        )
+      );
+    }
+    return next();
+  };
