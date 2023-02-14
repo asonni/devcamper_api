@@ -196,7 +196,7 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   // Create custom filename
   file.name = `photo_${bootcamp.id}${path.parse(file.name).ext}`;
 
-  const resized = sharp(file.data).resize({
+  const resized = await sharp(file.data).resize({
     width: +process.env.FILE_UPLOAD_WIDTH || 500,
     height: +process.env.FILE_UPLOAD_HEIGHT || 500
   });
@@ -213,7 +213,7 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);
-    return new ErrorResponse(`Problem with file upload`, 500);
+    return next(new ErrorResponse(`Problem with file upload`, 500));
   }
 
   // file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
