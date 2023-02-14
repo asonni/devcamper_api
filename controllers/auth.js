@@ -14,7 +14,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 // Get token from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
+const sendTokenResponse = (user, statusCode, req, res) => {
   // Create token
   const token = user.getSignedJwtToken();
 
@@ -22,12 +22,9 @@ const sendTokenResponse = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true
+    httpOnly: true,
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
   };
-
-  if (process.env.NODE_ENV === 'production') {
-    options.secure = true;
-  }
 
   return res.status(statusCode).cookie('token', token, options).json({
     success: true,
@@ -50,7 +47,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     role
   });
 
-  sendTokenResponse(user, 200, res);
+  sendTokenResponse(user, 200, req, res);
 });
 
 // @desc      Login user
@@ -74,7 +71,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return next(new ErrorResponse('Invalid credentials', 401));
   }
-  return sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, req, res);
 });
 
 // @desc      Log user out / clear cookie
@@ -148,7 +145,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
 
-  return sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, req, res);
 });
 
 // @desc      Forgot password
@@ -224,5 +221,5 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
   await user.save();
 
-  return sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, req, res);
 });

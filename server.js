@@ -47,6 +47,8 @@ Sentry.init({
   dsn: process.env.SENTRY_DSN
 });
 
+app.enable('trust proxy');
+
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
 
@@ -136,4 +138,14 @@ process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
   // Close server & exit process
   server.close(() => process.exit(1));
+});
+
+// This line of code for handle Heroku exceptions (Response SIGTERM Signal)
+process.on('SIGTERM', () => {
+  // eslint-disable-next-line no-console
+  console.log('👋 SIGTERM RECEIVED, Shutting down gracefully'.red.bold);
+  server.close(() => {
+    // eslint-disable-next-line no-console
+    console.log('💥 Process terminated!'.red.bold);
+  });
 });
