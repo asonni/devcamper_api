@@ -196,28 +196,25 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   // Create custom filename
   file.name = `photo_${bootcamp.id}${path.parse(file.name).ext}`;
 
-  sharp(file.data)
-    .resize({
-      width: +process.env.FILE_UPLOAD_WIDTH || 500,
-      height: +process.env.FILE_UPLOAD_HEIGHT || 500
-    })
-    // .toFormat('jpeg', { mozjpeg: true })
-    .toFile(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
-      if (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
-        return new ErrorResponse(`Problem with file upload`, 500);
-      }
-      await Bootcamp.findByIdAndUpdate(req.params.id, {
-        photo: file.name
-      });
-      return res.status(200).json({
-        success: true,
-        data: file.name
-      });
-    });
+  const resized = sharp(file.data).resize({
+    width: +process.env.FILE_UPLOAD_WIDTH || 500,
+    height: +process.env.FILE_UPLOAD_HEIGHT || 500
+  });
 
-  return new ErrorResponse(`Problem with file upload`, 500);
+  try {
+    await resized.toFile(`${process.env.FILE_UPLOAD_PATH}/${file.name}`);
+    await Bootcamp.findByIdAndUpdate(req.params.id, {
+      photo: file.name
+    });
+    return res.status(200).json({
+      success: true,
+      data: file.name
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    return new ErrorResponse(`Problem with file upload`, 500);
+  }
 
   // file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
   //   if (err) {
