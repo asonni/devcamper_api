@@ -6,6 +6,54 @@ const jwt = require('jsonwebtoken');
 const gravatar = require('gravatar');
 const validator = require('validator');
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - name
+ *        - email
+ *        - password
+ *        - passwordConfirm
+ *      properties:
+ *        name:
+ *          type: string
+ *          default: Jane Doe
+ *        email:
+ *          type: string
+ *          default: jane.doe@example.com
+ *        password:
+ *          type: string
+ *          default: stringPassword123
+ *        passwordConfirm:
+ *          type: string
+ *          default: stringPassword123
+ *    CreateUserResponse:
+ *      type: object
+ *      properties:
+ *        success:
+ *          type: boolean
+ *        data:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *            email:
+ *              type: string
+ *            role:
+ *              type: string
+ *            password:
+ *              type: string
+ *            _id:
+ *              type: string
+ *            createdAt:
+ *              type: string
+ *            avatar:
+ *              type: string
+ */
+
 const UserSchema = new mongoose.Schema({
   avatar: String,
   name: {

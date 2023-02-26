@@ -12,6 +12,36 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
+const swaggerUi = require('swagger-ui-express');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const swaggerJsdoc = require('swagger-jsdoc');
+
+const swaggerJsdocOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'DEVCAMPER API',
+      version: '1.0.0'
+    },
+    components: {
+      securitySchemas: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    },
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
+  },
+  apis: ['./routes/*.js', './models/*.js'] // files containing annotations as above
+};
+
+const openapiSpecification = swaggerJsdoc(swaggerJsdocOptions);
 
 process.on('uncaughtException', err => {
   // eslint-disable-next-line no-console
@@ -107,6 +137,8 @@ app.use(cors());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
