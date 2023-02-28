@@ -13,7 +13,6 @@ const hpp = require('hpp');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
 const swaggerUi = require('swagger-ui-express');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const swaggerJsdoc = require('swagger-jsdoc');
 
 const swaggerJsdocOptions = {
@@ -21,7 +20,8 @@ const swaggerJsdocOptions = {
     openapi: '3.0.0',
     info: {
       title: 'DEVCAMPER API',
-      version: '1.0.0'
+      version: '1.0.0',
+      description: 'A Devcamper Express Library API'
     },
     components: {
       securitySchemas: {
@@ -32,6 +32,11 @@ const swaggerJsdocOptions = {
         }
       }
     },
+    servers: [
+      {
+        url: 'http://localhost:5000'
+      }
+    ],
     security: [
       {
         bearerAuth: []

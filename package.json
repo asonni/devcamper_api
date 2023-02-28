@@ -2,7 +2,7 @@
   "name": "devcamper_api",
   "version": "1.0.0",
   "description": "DevCamper Backend API",
-  "main": "server.js",
+  "source": "server.js",
   "engines": {
     "node": ">=12.14.0",
     "npm": ">=6.12.0",
@@ -11,6 +11,7 @@
   "scripts": {
     "start": "NODE_ENV=production node server",
     "dev": "nodemon server",
+    "build": "parcel build",
     "seed": "node seeder -d && node seeder -i && npm run dev",
     "lint:check": "eslint ./",
     "lint:fix": "eslint ./ --fix"
@@ -52,6 +53,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.6",
     "nodemon": "^2.0.20",
+    "parcel": "^2.8.3",
     "prettier": "^2.8.4"
   },
   "lint-staged": {
