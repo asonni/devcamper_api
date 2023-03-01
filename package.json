@@ -14,7 +14,8 @@
     "build": "parcel build",
     "seed": "node seeder -d && node seeder -i && npm run dev",
     "lint:check": "eslint ./",
-    "lint:fix": "eslint ./ --fix"
+    "lint:fix": "eslint ./ --fix",
+    "prepare": "husky install"
   },
   "author": "Aladdin Sonni <aladdin.sonni@gmail.com>",
   "license": "MIT",
@@ -50,24 +51,10 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "lint-staged": "^13.1.2",
     "nodemon": "^2.0.20",
     "parcel": "^2.8.3",
     "prettier": "^2.8.4"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
